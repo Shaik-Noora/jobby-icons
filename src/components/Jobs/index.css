@@ -1,0 +1,27 @@
+.user-card {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  border-radius: 20px;
+  background-size: cover;
+  padding: 10px;
+  width: 400px;
+}
+
+.contt {
+  background-color: #121212;
+  background-size: 100vh;
+  background-size: cover;
+  padding: 10px;
+}
+
+.btnn {
+  background-color: #4f46e5;
+  color: #f8fafc;
+  border-radius: 10px;
+  padding: 6px;
+}
+
+.lis {
+  padding: 20px;
+  border-radius: 10px;
+  flex-grow: 1;
+}
