@@ -1,17 +1,25 @@
-.user-card {
-  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
-  border-radius: 20px;
-  background-size: cover;
-  padding: 10px;
-  width: 400px;
-}
-
 .contt {
   background-color: #121212;
-  background-size: 100vh;
-  background-size: cover;
-  padding: 10px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100vw;
 }
+
+.user-card {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 20px;
+  padding: 20px;
+  flex: 1; /* take all available space */
+  min-width: 300px;
+  max-width: 600px;
+  height: 300px;
+}
+
 
 .btnn {
   background-color: #4f46e5;
@@ -24,4 +32,9 @@
   padding: 20px;
   border-radius: 10px;
   flex-grow: 1;
+}
+.txt {
+  color: #ffffff;
+  font-family: 'roboto';
+  font-size: 30px !important;
 }

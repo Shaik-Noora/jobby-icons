@@ -1,6 +1,6 @@
-import PlaceIcon from '@mui/icons-material/Place';
-import WorkIcon from '@mui/icons-material/Work'; 
-
+import {FaStar} from 'react-icons/fa'
+import {MdLocationOn} from 'react-icons/md'
+import {BsBriefcaseFill} from 'react-icons/bs'
 import './index.css'
 
 const JobItem = props => {
@@ -16,17 +16,30 @@ const JobItem = props => {
   } = data
   return (
     <li className="job-card">
-      <img src={companyLogoUrl} />
-      <h1>{title}</h1>
-      <p>{rating}</p>
-      <PlaceIcon />
-      <p>{location}</p>
-      <WorkIcon />
-      <p>{employmentType}</p>
-      <p>{packagePerAnnum}</p>
+      <div className="side">
+        <img src={companyLogoUrl} className="logo" />
+        <div>
+          <h1 className="txt">{title}</h1>
+          <div className="star">
+            <FaStar />
+            <p className="txt">{rating}</p>
+          </div>
+        </div>
+      </div>
+      <div className="side1">
+        <div className="sidee">
+          <MdLocationOn />
+          <p className="txt">{location}</p>
+        </div>
+        <div className="sidee">
+          <BsBriefcaseFill />
+          <p className="txt">{employmentType}</p>
+        </div>
+        <p className="txt">{packagePerAnnum}</p>
+      </div>
       <hr />
-      <h1>Description</h1>
-      <p>{jobDescription}</p>
+      <h1 className="desc">Description</h1>
+      <p className="desc">{jobDescription}</p>
     </li>
   )
 }

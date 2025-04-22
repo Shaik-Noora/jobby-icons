@@ -17,7 +17,9 @@ class Jobs extends Component {
   state = {
     userProfile: {},
     jobsData: [],
-    apiStatus: apiStatusConstants.initial,
+    apiStatusUP: apiStatusConstants.initial,
+    apiStatusJobs: apiStatusConstants.initial,
+    searchInput: '',
   }
 
   componentDidMount() {
@@ -26,6 +28,7 @@ class Jobs extends Component {
   }
 
   getJobs = async () => {
+    this.setState({apiStatusJobs: apiStatusConstants.inProgress})
     const url = 'https://apis.ccbp.in/jobs'
     const token = Cookies.get('jwt_token')
     const options = {
@@ -46,11 +49,18 @@ class Jobs extends Component {
       rating: each.rating,
       title: each.title,
     }))
-    this.setState({jobsData: updatedData})
+    if (response.ok === true) {
+      this.setState({
+        jobsData: updatedData,
+        apiStatusJobs: apiStatusConstants.success,
+      })
+    } else {
+      this.setState({apiStatusJobs: apiStatusConstants.failure})
+    }
   }
 
   getUserProfile = async () => {
-    this.setState({apiStatus: apiStatusConstants.inProgress})
+    this.setState({apiStatusJobs: apiStatusConstants.inProgress})
     const profileUrl = 'https://apis.ccbp.in/profile'
     const token = Cookies.get('jwt_token')
     const profileOptions = {
@@ -120,22 +130,79 @@ class Jobs extends Component {
     }
   }
 
-  renderSearch = () => (
-    <button type="button" data-testid="searchButton">
-      <BsSearch className="search-icon" />
-    </button>
-  )
+  getSearchInput = event => {
+    const {searchInput} = this.state
+    this.setState({searchInput: event.target.value})
+  }
+
+  renderjobsNotFound = () => <h1 className="txt">Job Not Found</h1>
+
+  searchJobBtn = () => {
+    const {jobsData, searchInput} = this.state
+    const filteredJobs = jobsData.filter(eachJob =>
+      eachJob.title.toLowerCase().includes(searchInput.toLowerCase()),
+    )
+    if (filteredJobs.length === 0) {
+      this.renderjobsNotFound()
+    }
+
+    this.setState({jobsData: filteredJobs})
+  }
+
+  renderSearch = () => {
+    const {searchInput} = this.state
+    return (
+      <>
+        <input
+          type="search"
+          value={searchInput}
+          onChange={this.getSearchInput}
+        />
+        <button
+          type="button"
+          data-testid="searchButton"
+          onClick={this.searchJobBtn}
+        >
+          <BsSearch className="search-icon" />
+        </button>
+      </>
+    )
+  }
+
+  successJobs = () => {
+    const {jobsData} = this.state
+    return (
+      <ul className="lis">
+        {jobsData.map(each => (
+          <JobItem data={each} key={each.id} />
+        ))}
+      </ul>
+    )
+  }
+
+  renderJobs = () => {
+    const {apiStatus} = this.state
+    switch (apiStatus) {
+      case apiStatusConstants.success:
+        return this.successJobs()
+      case apiStatusConstants.failure:
+        return this.renderjobsNotFound()
+      case apiStatusConstants.inProgress:
+        return this.renderLoader()
+      default:
+        return null
+    }
+  }
 
   render() {
-    const {showLoader, jobsData} = this.state
+    const {apiStatus} = this.state
     return (
       <div className="contt">
         {this.renderUserProfile()}
-        <ul className="lis">
-          {jobsData.map(each => (
-            <JobItem data={each} key={each.id} />
-          ))}
-        </ul>
+        <div>
+          {this.renderSearch()}
+          {this.renderJobs()}
+        </div>
       </div>
     )
   }
